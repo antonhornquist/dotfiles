@@ -26,4 +26,4 @@ def irb_stfu!; self.irb_return_format = ''; end
 def irb_set_normal_return_format; self.irb_return_format = "=> %s\n"; end
 
 # autoload current work stuff
-load '.irb_autoload'
+load '~/.irb_autoload'
