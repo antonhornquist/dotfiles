@@ -1,0 +1,41 @@
+"*":
+  "bracket-matcher":
+    autocompleteBrackets: false
+    autocompleteSmartQuotes: false
+  core:
+    audioBeep: false
+    disabledPackages: [
+      "metrics"
+      "autocomplete-css"
+      "autocomplete-html"
+      "find-and-replace"
+      "exception-reporting"
+    ]
+    packagesWithKeymapsDisabled: [
+      "supercollider"
+    ]
+    telemetryConsent: "no"
+  "disable-keybindings":
+    bundledPackages: [
+      "bracket-matcher"
+    ]
+  editor:
+    fontSize: 15
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+    softTabs: false
+    softWrap: true
+    softWrapAtPreferredLineLength: true
+  "keyboard-localization":
+    useKeyboardLayout: "sv_SE"
+  supercollider:
+    sclangConf: "C:\\Users\\ahorse\\AppData\\Local\\SuperCollider\\sclang_conf.yaml"
+    sclangPath: "C:\\Program Files (x86)\\SuperCollider-3.8.0\\sclang.exe"
+  "vim-mode": {}
+  welcome:
+    showOnStartup: false
+".source.supercollider":
+  editor:
+    showIndentGuide: false
+    showInvisibles: false

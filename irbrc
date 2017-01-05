@@ -9,11 +9,6 @@ IRB.conf[:USE_READLINE] = true
 # pretty print
 require 'pp'
 
-# ri integration
-def ri *names
-	system "ri #{names.map {|name| name.to_s }.join(" ")}"
-end
-
 # are we in jirb?
 def using_jruby?
 	(defined? RUBY_ENGINE != nil) and RUBY_ENGINE == 'jruby'
@@ -26,4 +21,10 @@ def irb_stfu!; self.irb_return_format = ''; end
 def irb_set_normal_return_format; self.irb_return_format = "=> %s\n"; end
 
 # autoload current work stuff
-load '~/.irb_autoload'
+autoload_file = "#{ENV['HOME']}/.irb_autoload"
+if File.exists? autoload_file
+	puts "~/.irb_autoload found"
+	load autoload_file
+else
+	puts "~/.irb_autoload not found"
+end
