@@ -1,0 +1,5 @@
+XTerm*loginShell: true
+XTerm*reverseVideo: on
+XTerm*metaSendsEscape: true
+*faceName: Cousine
+*faceSize: 12

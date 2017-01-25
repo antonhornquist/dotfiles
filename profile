@@ -15,15 +15,11 @@ HISTSIZE=10000
 export RUBYOPT="rubygems"
 
 # Basic Aliases
-alias ls='ls -Gp'
-# alias ls="ls -Fh"
+alias ls='ls -Gp' # ls="ls -Fh"
 alias c='clear'
 alias cal='cal -m'
-alias eprofile='$EDITOR ~/.profile'
-alias sprofile='source ~/.profile'
-# alias jrake='jruby -S rake'
-alias cr="clear; rake"
-alias gitsu="git status --untracked=no"
 
-# Development Aliases
-# source "${JAH_DEVELOPMENT}/aliases.dev"
+# if on OpenBSD .. (notetoself: wouldn't a condition on (uname -s) = OpenBSD be applicable here?
+#wsconsctl keyboard.encoding=sv.metaesc
+#export PKG_PATH=http://ftp.eu.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(uname -p)/
+# end if
