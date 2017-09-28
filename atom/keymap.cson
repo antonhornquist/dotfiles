@@ -31,9 +31,9 @@
 # Atom Flight Manual:
 # http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
 
-".platform-win32 atom-workspace atom-text-editor.vim-mode.normal-mode":
-  '-': 'vim-mode:search'
-  '_': 'vim-mode:reverse-search'
+".platform-win32 atom-workspace atom-text-editor.vim-mode-plus.normal-mode":
+  '-': 'vim-mode-plus:search'
+  '_': 'vim-mode-plus:search-backwards'
 
 '.platform-win32 atom-workspace':
   'alt-,': 'supercollider:clear-post-window'
