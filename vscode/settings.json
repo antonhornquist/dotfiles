@@ -9,5 +9,6 @@
         "/bin/bash"
     ],
     "editor.fontFamily": "'Akkurat-Mono', Consolas, 'Courier New', monospace",
-    "editor.fontSize": 16
+    "editor.fontSize": 16,
+    "editor.autoClosingBrackets": "never"
 }
