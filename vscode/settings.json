@@ -1,0 +1,13 @@
+// to be placed in %HOME%\AppData\Roaming\Code\User
+{
+    "editor.minimap.enabled": false,
+    "window.zoomLevel": 0,
+    // "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+    "terminal.integrated.shell.windows": "C:\\cygwin64\\bin\\bash.exe",
+    "terminal.integrated.shellArgs.windows": [
+        "/bin/xhere",
+        "/bin/bash"
+    ],
+    "editor.fontFamily": "'Akkurat-Mono', Consolas, 'Courier New', monospace",
+    "editor.fontSize": 16
+}
