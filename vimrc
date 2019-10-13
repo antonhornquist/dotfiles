@@ -3,6 +3,7 @@ let $LANG = 'en_US'
 
 set nocompatible " use vim settings, must be first can change other options as a side effect
 
+set shiftwidth=4
 set tabstop=4 " default tabstop
 "set ignorecase
 set incsearch
@@ -12,6 +13,8 @@ set hidden " this makes vim act like all other editors, buffers can exist in the
 set backspace=indent,eol,start
 
 set wrap " wrap lines
+
+set wildmode=longest,list " https://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 
 syntax enable
 
