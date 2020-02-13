@@ -53,7 +53,7 @@ if has('gui_running')
 	endif
 
 	if has("gui_win32")
-		set guifont=Consolas:h15:cANSI
+		set guifont=Consolas:h14:cANSI
 		"set columns=130
 		"set lines=45
 	endif
@@ -66,3 +66,6 @@ if has('gui_running')
 endif
 
 set encoding=utf-8
+
+let @z=':set guifont=Consolas:h9:cANSI'
+let @x=':set guifont=Consolas:h14:cANSI'
