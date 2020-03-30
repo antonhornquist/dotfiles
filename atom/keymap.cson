@@ -35,12 +35,28 @@
   '-': 'vim-mode-plus:search'
   '_': 'vim-mode-plus:search-backwards'
 
+".platform-darwin atom-workspace atom-text-editor.vim-mode.normal-mode":
+  '-': 'vim-mode:search'
+  '_': 'vim-mode:reverse-search'
+
 '.platform-win32 atom-workspace':
   'alt-,': 'supercollider:clear-post-window'
   'alt-.': 'supercollider:cmd-period'
   'ctrl-alt-,': 'supercollider:open-post-window'
 
+'.platform-darwin atom-workspace':
+  'alt-,': 'supercollider:clear-post-window'
+  'alt-.': 'supercollider:cmd-period'
+
 ".platform-win32 atom-workspace atom-text-editor[data-grammar~='supercollider']":
+  'shift-enter': 'supercollider:eval'
+  'alt-n': 'supercollider:open-help-file'
+  'ctrl-enter': 'supercollider:evaluate-line-selection-or-region'
+  'alt-k': 'supercollider:move-to-previous-region'
+  'alt-j': 'supercollider:move-to-next-region'
+  'alt-l': 'supercollider:evaluate-line-selection-or-region'
+
+".platform-darwin atom-workspace atom-text-editor[data-grammar~='supercollider']":
   'shift-enter': 'supercollider:eval'
   'alt-n': 'supercollider:open-help-file'
   'ctrl-enter': 'supercollider:evaluate-line-selection-or-region'
