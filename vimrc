@@ -1,3 +1,5 @@
+" TODO: integrate sensible.vim settings
+
 set langmenu=en_US
 let $LANG = 'en_US'
 
@@ -39,7 +41,18 @@ if has("autocmd")
 endif
 
 if has('gui_running')
-	colorscheme desert
+
+	"set background=light
+	let hour = str2nr(strftime("%H"))
+
+	if 7 < hour && hour < 20
+		set background=light
+	else
+		set background=dark
+	endif
+	colorscheme solarized
+	let g:solarized_contrast="high"
+	" colorscheme desert
 	set vb " visual bell
 	set guioptions-=T " remove toolbar
 	set guioptions+=a
@@ -53,7 +66,7 @@ if has('gui_running')
 	endif
 
 	if has("gui_win32")
-		set guifont=Consolas:h14:cANSI
+		set guifont=Consolas:h10:cANSI
 		"set columns=130
 		"set lines=45
 	endif
@@ -65,8 +78,209 @@ if has('gui_running')
 	endif
 endif
 
+if has('nvim')
+	let g:solarized_termcolors=256
+	colorscheme solarized
+	set background=light
+	set vb " visual bell
+	set guioptions-=T " remove toolbar
+	set guioptions+=a
+	set keymodel-=stopsel " from windows vimrc...
+	set guifont=Consolas:h12:cANSI
+	"set columns=130
+	"set lines=45
+endif
+
 set encoding=utf-8
 
-let @z=':set guifont=Consolas:h9:cANSI'
-let @x=':set guifont=Consolas:h14:cANSI'
+command Bd b#|bd#
+
+map <C-Enter> :call SCSendToRepl()<cr>
+imap <C-Enter> <Esc>:call SCSendToRepl()<cr>
+map <C-Space> :call SCSendHardStopToRepl()<cr>
+imap <C-Space> <Esc>:call SCSendHardStopToRepl()<cr>a
+map <C-BS> :call SCClearPostWindow()<cr>
+imap <C-BS> <Esc>:call SCClearPostWindow()<cr>a
+
+map <Leader>o :only<cr>
+" map <C-H> :call SCSetPostWindowLeftLayout()<cr>
+map <Leader>h :call SCSetPostWindowLeftLayout()<cr>
+" map <C-J> :call SCSetPostWindowBelowLayout()<cr>
+map <Leader>j :call SCSetPostWindowBelowLayout()<cr>
+" map <C-K> :call SCSetPostWindowAboveLayout()<cr>
+map <Leader>k :call SCSetPostWindowAboveLayout()<cr>
+" map <C-L> :call SCSetPostWindowRightLayout()<cr>
+map <Leader>l :call SCSetPostWindowRightLayout()<cr>
+
+map <Leader>s :call SCStopRepl()<cr>
+map <Leader>r :call SCSendRecompileToRepl()<cr>
+map <Leader>b :call SCSendBootServerToRepl()<cr>
+map <Leader>q :call SCSendQuitServerToRepl()<cr>
+map <Leader>n :call SCSendQueryAllNodesToRepl()<cr>
+map <Leader>. :call SCSendHardStopToRepl()<cr>
+map <Leader>z :call SCSendRecordToRepl()<cr>
+map <Leader>x :call SCSendStopRecordToRepl()<cr>
+
+let g:sc_change_nowExecutingPath = v:true
+
+function! SCSendToRepl()
+	if !SCReplIsStarted()
+		call SCSetPostWindowBelowLayout()
+	endif
+
+	let saved_pos = getpos(".")
+	" consider using n option - see search helpfile
+	let [lnum,col] = searchpairpos('^($', '', '^)$')
+
+	if lnum == 0
+		let line = getline(".")
+		" echom "evaluate line: " . line
+		call SCSendToReplAndEvaluate(line)
+	else
+		let end = lnum
+		execute(end)
+		execute("normal %")
+		let start = getpos(".")[1]
+		call setpos(".", saved_pos)
+		let lines = getline(start, end)
+		let content = ""
+		for line in lines
+			" let content = content . line . "\r"
+			let content = content . line . "\n"
+		endfor
+		" echom "evaluate content: " . content
+		call SCSendToReplAndEvaluate(content)
+	endif
+endfunction
+
+function! SCClearPostWindow()
+	if SCReplIsStarted()
+		let current_buf = buffer_number()
+		execute("buffer " . g:sc_buf)
+		execute("normal gg")
+		execute("normal VG")
+		execute("normal d")
+		execute("buffer " . current_buf)
+	else
+		echom "SuperCollider REPL is not running"
+	endif
+endfunction
+
+function! SCSendHardStopToRepl()
+	call SCSendToReplAndEvaluate("thisProcess.hardStop;")
+endfunction
+
+function! SCSendQueryAllNodesToRepl()
+	call SCSendToReplAndEvaluate("s.queryAllNodes(true);")
+endfunction
+
+function! SCSendRecompileToRepl()
+	call SCSendToReplAndEvaluate("thisProcess.recompile;")
+endfunction
+
+function! SCSendBootServerToRepl()
+	call SCSendToReplAndEvaluate("s.boot;")
+endfunction
+
+function! SCSendQuitServerToRepl()
+	call SCSendToReplAndEvaluate("s.quit;")
+endfunction
+
+function! SCSendRecordToRepl()
+	call SCSendToReplAndEvaluate("s.record;")
+endfunction
+
+function! SCSendStopRecordToRepl()
+	call SCSendToReplAndEvaluate("s.stopRecording;")
+endfunction
+
+function! SCSendToReplAndEvaluate(string)
+	if g:sc_change_nowExecutingPath
+		let filepath = '"' . expand('%:p') . '"'
+
+		" below only relevant on windows (for file paths)
+		let filepath = substitute(filepath, '\', '/', 'g')
+
+		if filepath == '""'
+			let str = substitute(a:string, "thisProcess.nowExecutingPath", "nil", "g")
+		else
+			let str = substitute(a:string, "thisProcess.nowExecutingPath", filepath, "g")
+		endif
+	else
+		let str = a:string
+	endif
+
+	if g:sc_repl_type == "job"
+		" echom str
+		call ch_sendraw(g:sc_job, str . "\f")
+	else
+		call term_sendkeys(g:sc_buf, "\r\r" . str . "\r\f\r")
+	endif
+endfunction
+
+function! SCSetPostWindowBelowLayout()
+	if !SCReplIsStarted()
+		call SCStartREPL()
+	endif
+
+	execute("only")
+	execute("belowright split")
+	execute("buffer " . g:sc_buf)
+	execute("wincmd k")
+endfunction
+
+function! SCSetPostWindowRightLayout()
+	if !SCReplIsStarted()
+		call SCStartREPL()
+	endif
+
+	execute("only")
+	execute("vertical rightbelow split")
+	execute("buffer " . g:sc_buf)
+	execute("wincmd h")
+endfunction
+
+function! SCReplIsStarted()
+	return exists("g:sc_buf")
+endfunction
+
+function! SCStartREPL()
+	" call SCStartTerminalREPL()
+	call SCStartJobREPL()
+endfunction
+
+function! SCStartTerminalREPL()
+	let buf_name = 'sc_post_window'
+	let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"', {"hidden": 1})
+	let g:sc_job = term_getjob(g:sc_buf)
+	let g:sc_repl_type = "terminal"
+endfunction
+
+function! SCStartJobREPL()
+	let buf_name = 'sc_post_window'
+	let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"',
+				\ {'out_io': 'buffer', 'out_name': buf_name})
+	let g:sc_buf = buf_name
+	let g:sc_repl_type = "job"
+endfunction
+
+function! SCStopRepl()
+	if SCReplIsStarted()
+		call job_stop(g:sc_job)
+		if g:sc_repl_type == "terminal"
+			call term_wait(g:sc_buf, 100)
+		endif
+		execute("bd " . g:sc_buf)
+		unlet g:sc_buf
+		unlet g:sc_job
+		unlet g:sc_repl_type
+	else
+		echom "SuperCollider REPL is not running"
+	endif
+endfunction
+
+let @z=':set guifont=Consolas:h8:cANSI'
+let @x=':set guifont=Consolas:h10:cANSI'
+let @c=':set guifont=Consolas:h12:cANSI'
+let @v=':set guifont=Consolas:h14:cANSI'
 
