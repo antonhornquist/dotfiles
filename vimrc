@@ -45,7 +45,7 @@ if has('gui_running')
 	"set background=light
 	let hour = str2nr(strftime("%H"))
 
-	if 7 < hour && hour < 20
+	if 7 < hour && hour < 16
 		set background=light
 	else
 		set background=dark
@@ -66,7 +66,7 @@ if has('gui_running')
 	endif
 
 	if has("gui_win32")
-		set guifont=Consolas:h10:cANSI
+		set guifont=Consolas:h8:cANSI
 		"set columns=130
 		"set lines=45
 	endif
@@ -78,23 +78,29 @@ if has('gui_running')
 	endif
 endif
 
-if has('nvim')
-	let g:solarized_termcolors=256
-	colorscheme solarized
-	set background=light
-	set vb " visual bell
-	set guioptions-=T " remove toolbar
-	set guioptions+=a
-	set keymodel-=stopsel " from windows vimrc...
-	set guifont=Consolas:h12:cANSI
-	"set columns=130
-	"set lines=45
-endif
-
 set encoding=utf-8
 
-command Bd b#|bd#
+map <A-a> :call SCSendToReplAndEvaluate("~vimkey.value('a')")<cr>
+map <A-s> :call SCSendToReplAndEvaluate("~vimkey.value('s')")<cr>
+map <A-d> :call SCSendToReplAndEvaluate("~vimkey.value('d')")<cr>
+map <A-f> :call SCSendToReplAndEvaluate("~vimkey.value('f')")<cr>
+map <A-g> :call SCSendToReplAndEvaluate("~vimkey.value('g')")<cr>
+map <A-h> :call SCSendToReplAndEvaluate("~vimkey.value('h')")<cr>
+map <A-j> :call SCSendToReplAndEvaluate("~vimkey.value('j')")<cr>
+map <A-k> :call SCSendToReplAndEvaluate("~vimkey.value('k')")<cr>
+map <A-l> :call SCSendToReplAndEvaluate("~vimkey.value('l')")<cr>
 
+map <A-q> :call SCSendToReplAndEvaluate("~vimkey.value('q')")<cr>
+map <A-w> :call SCSendToReplAndEvaluate("~vimkey.value('w')")<cr>
+map <A-e> :call SCSendToReplAndEvaluate("~vimkey.value('e')")<cr>
+map <A-r> :call SCSendToReplAndEvaluate("~vimkey.value('r')")<cr>
+map <A-t> :call SCSendToReplAndEvaluate("~vimkey.value('t')")<cr>
+map <A-y> :call SCSendToReplAndEvaluate("~vimkey.value('y')")<cr>
+map <A-u> :call SCSendToReplAndEvaluate("~vimkey.value('u')")<cr>
+map <A-i> :call SCSendToReplAndEvaluate("~vimkey.value('i')")<cr>
+map <A-o> :call SCSendToReplAndEvaluate("~vimkey.value('o')")<cr>
+
+map <C-0> :call SCSendToRepl()<cr>
 map <C-Enter> :call SCSendToRepl()<cr>
 imap <C-Enter> <Esc>:call SCSendToRepl()<cr>
 map <C-Space> :call SCSendHardStopToRepl()<cr>
@@ -120,6 +126,7 @@ map <Leader>n :call SCSendQueryAllNodesToRepl()<cr>
 map <Leader>. :call SCSendHardStopToRepl()<cr>
 map <Leader>z :call SCSendRecordToRepl()<cr>
 map <Leader>x :call SCSendStopRecordToRepl()<cr>
+map <Leader>u :call SCEditStartupFile()<cr>
 
 let g:sc_change_nowExecutingPath = v:true
 
@@ -194,6 +201,18 @@ function! SCSendStopRecordToRepl()
 	call SCSendToReplAndEvaluate("s.stopRecording;")
 endfunction
 
+function! SCEditStartupFile()
+	" windows location
+	let sc_startup_file_path = "C:/Users/Thinkpad X250/AppData/Local/SuperCollider/startup.scd"
+	execute("edit " . sc_startup_file_path)
+endfunction
+
+function! SCEditUserExtensionDir()
+	" windows location
+	let sc_startup_file_path = "C:/Users/Thinkpad X250/AppData/Local/SuperCollider"
+	execute("edit " . sc_startup_file_path)
+endfunction
+
 function! SCSendToReplAndEvaluate(string)
 	if g:sc_change_nowExecutingPath
 		let filepath = '"' . expand('%:p') . '"'
@@ -251,14 +270,17 @@ endfunction
 
 function! SCStartTerminalREPL()
 	let buf_name = 'sc_post_window'
-	let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"', {"hidden": 1})
+	" let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"', {"hidden": 1})
+	let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.11.1\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.11.1"', {"hidden": 1})
 	let g:sc_job = term_getjob(g:sc_buf)
 	let g:sc_repl_type = "terminal"
 endfunction
 
 function! SCStartJobREPL()
 	let buf_name = 'sc_post_window'
-	let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"',
+	" let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"',
+	" 			\ {'out_io': 'buffer', 'out_name': buf_name})
+	let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.11.1\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.11.1"',
 				\ {'out_io': 'buffer', 'out_name': buf_name})
 	let g:sc_buf = buf_name
 	let g:sc_repl_type = "job"
@@ -284,3 +306,4 @@ let @x=':set guifont=Consolas:h10:cANSI'
 let @c=':set guifont=Consolas:h12:cANSI'
 let @v=':set guifont=Consolas:h14:cANSI'
 
+map <Leader>f :!start "\Program Files\love\love.exe" .<cr>
