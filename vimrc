@@ -100,22 +100,16 @@ map <A-u> :call SCSendToReplAndEvaluate("~vimkey.value('u')")<cr>
 map <A-i> :call SCSendToReplAndEvaluate("~vimkey.value('i')")<cr>
 map <A-o> :call SCSendToReplAndEvaluate("~vimkey.value('o')")<cr>
 
-map <C-0> :call SCSendToRepl()<cr>
-map <C-Enter> :call SCSendToRepl()<cr>
-imap <C-Enter> <Esc>:call SCSendToRepl()<cr>
-map <C-Space> :call SCSendHardStopToRepl()<cr>
-imap <C-Space> <Esc>:call SCSendHardStopToRepl()<cr>a
-map <C-BS> :call SCClearPostWindow()<cr>
-imap <C-BS> <Esc>:call SCClearPostWindow()<cr>a
+map <Leader>e :call SCSendToRepl()<cr>
+map <Leader>c :call SCClearPostWindow()<cr>
+map <Leader>. :call SCSendHardStopToRepl()<cr>
 
-map <Leader>o :only<cr>
-" map <C-H> :call SCSetPostWindowLeftLayout()<cr>
+map <Leader>z :call SCSendRecordToRepl()<cr>
+map <Leader>x :call SCSendStopRecordToRepl()<cr>
+
 map <Leader>h :call SCSetPostWindowLeftLayout()<cr>
-" map <C-J> :call SCSetPostWindowBelowLayout()<cr>
 map <Leader>j :call SCSetPostWindowBelowLayout()<cr>
-" map <C-K> :call SCSetPostWindowAboveLayout()<cr>
 map <Leader>k :call SCSetPostWindowAboveLayout()<cr>
-" map <C-L> :call SCSetPostWindowRightLayout()<cr>
 map <Leader>l :call SCSetPostWindowRightLayout()<cr>
 
 map <Leader>s :call SCStopRepl()<cr>
@@ -123,9 +117,6 @@ map <Leader>r :call SCSendRecompileToRepl()<cr>
 map <Leader>b :call SCSendBootServerToRepl()<cr>
 map <Leader>q :call SCSendQuitServerToRepl()<cr>
 map <Leader>n :call SCSendQueryAllNodesToRepl()<cr>
-map <Leader>. :call SCSendHardStopToRepl()<cr>
-map <Leader>z :call SCSendRecordToRepl()<cr>
-map <Leader>x :call SCSendStopRecordToRepl()<cr>
 map <Leader>u :call SCEditStartupFile()<cr>
 
 let g:sc_change_nowExecutingPath = v:true
