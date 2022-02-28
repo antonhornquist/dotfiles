@@ -292,9 +292,18 @@ function! SCStopRepl()
 	endif
 endfunction
 
-let @z=':set guifont=Consolas:h8:cANSI'
-let @x=':set guifont=Consolas:h10:cANSI'
-let @c=':set guifont=Consolas:h12:cANSI'
-let @v=':set guifont=Consolas:h14:cANSI'
+
+if $COMPUTERNAME == "DESKTOP-GH92C1V"
+	set guifont=Consolas:h12:cANSI
+	let @z=':set guifont=Consolas:h12:cANSI'
+	let @x=':set guifont=Consolas:h14:cANSI'
+	let @c=':set guifont=Consolas:h16:cANSI'
+	let @v=':set guifont=Consolas:h18:cANSI'
+else
+	let @z=':set guifont=Consolas:h8:cANSI'
+	let @x=':set guifont=Consolas:h10:cANSI'
+	let @c=':set guifont=Consolas:h12:cANSI'
+	let @v=':set guifont=Consolas:h14:cANSI'
+endif
 
 map <Leader>f :!start "\Program Files\love\love.exe" .<cr>
