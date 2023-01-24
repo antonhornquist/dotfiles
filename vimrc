@@ -262,7 +262,7 @@ endfunction
 function! SCStartTerminalREPL()
 	let buf_name = 'sc_post_window'
 	" let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"', {"hidden": 1})
-	let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.11.1\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.11.1"', {"hidden": 1})
+	let g:sc_buf = term_start('C:\\Program Files\\SuperCollider-3.12.2\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.12.2"', {"hidden": 1})
 	let g:sc_job = term_getjob(g:sc_buf)
 	let g:sc_repl_type = "terminal"
 endfunction
@@ -271,7 +271,7 @@ function! SCStartJobREPL()
 	let buf_name = 'sc_post_window'
 	" let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.9.3\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.9.3"',
 	" 			\ {'out_io': 'buffer', 'out_name': buf_name})
-	let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.11.1\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.11.1"',
+	let g:sc_job = job_start('C:\\Program Files\\SuperCollider-3.12.2\\sclang.exe -d "C:\\Program Files\\SuperCollider-3.12.2"',
 				\ {'out_io': 'buffer', 'out_name': buf_name})
 	let g:sc_buf = buf_name
 	let g:sc_repl_type = "job"
